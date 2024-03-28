@@ -46,6 +46,19 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
+        
+        self._check_bullet_alien_collisions()
+            
+
+    def _check_bullet_alien_collisions(self):
+        """Respond to bullet alien collision."""
+        # Remove bullets and aliens that have collided.
+        collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
+
+        if not self.aliens:
+        # Destroy existing bullets and create a new fleet.
+            self.bullets.empty()
+            self._create_fleet()
 
     def _check_events(self):                   # A single leading underscore indicates a helper method.
             # Watch the keyboard and mouse events.
@@ -82,6 +95,7 @@ class AlienInvasion:
         if len(self.bullets) <= self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+
     def _create_fleet(self):
         """create the fleet of aliens"""
         # create an alien and find the number of aliens in a row.
